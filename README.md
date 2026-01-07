@@ -99,38 +99,101 @@ python app.py
 
 Acesse: **http://localhost:5000**
 
-## 🎯 Como Usar
+## 🎯 COMO USAR
 
-1. Digite ou cole seu texto na área "Seu Texto"
-2. Escolha uma das opções:
-   - **Corrigir Erros**: Para corrigir erros gramaticais e ortográficos
-   - **Melhorar Texto**: Para aprimorar a qualidade geral
-   - **Reescrever**: Escolha um estilo e reescreva o texto
-3. O resultado aparecerá na área "Resultado"
-4. Clique em "Copiar" para copiar o texto processado
+1. Acesse **http://localhost:5000** no navegador
+2. Digite ou cole seu texto no editor
+3. Use a **BARRA LATERAL** para navegar entre funcionalidades:
+   - **📝 EDITOR**: Área de edição principal
+   - **✅ CORRIGIR**: Corrige erros gramaticais
+   - **🔄 REESCREVER**: Escolha estilo (formal/informal/técnico/criativo)
+   - **⬆️ MELHORAR**: Aprimora qualidade geral
+   - **📝 RESUMIR**: Gera resumo (curto/médio/longo)
+   - **💡 SUGESTÕES**: Recebe análise e sugestões
+4. O resultado aparece no painel direito
+5. Use botões **COPIAR** ou **SUBSTITUIR** para gerenciar resultados
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ TECNOLOGIAS UTILIZADAS
 
-- **Backend**: Flask, OpenAI API, Flask-CORS
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **IA**: GPT-3.5-turbo (OpenAI)
+- **Backend**: Flask 3.0.0, Python 3.x
+- **IA**: Ollama (llama3.2 - 100% gratuito e local)
+- **Frontend**: HTML5, CSS3, JavaScript Vanilla
+- **Design**: Material Icons, Dark Theme (YouTube-inspired)
+- **API**: RESTful com JSON
 
-## 📁 Estrutura do Projeto
+## 📁 ESTRUTURA DO PROJETO
 
 ```
 Assistente-de-Escrita-A.I/
 ├── backend/
-│   ├── app.py              # Aplicação Flask principal
-│   ├── requirements.txt    # Dependências Python
-│   ├── .env.example        # Exemplo de variáveis de ambiente
+│   ├── app.py                 # Flask API + servidor estático
+│   ├── requirements.txt       # Dependências Python
+│   ├── .env.example          # Template de configuração
 │   └── .gitignore
 ├── frontend/
-│   ├── index.html          # Página principal
-│   ├── style.css           # Estilos
-│   └── script.js           # Lógica do frontend
+│   ├── index_novo.html       # Interface YouTube-style
+│   ├── style_novo.css        # Dark theme (preto/azul)
+│   └── script_novo.js        # Lógica e API calls
+├── INSTALL_OLLAMA.md         # Guia detalhado de instalação
 ├── LICENSE
 └── README.md
 ```
+
+## 🐛 SOLUÇÃO DE PROBLEMAS
+
+### Erro HTTP 500
+
+✅ Verifique se o Ollama está rodando: `ollama serve`
+✅ Verifique se o modelo está instalado: `ollama list`
+✅ Baixe o modelo se necessário: `ollama pull llama3.2`
+
+### "Ollama não está rodando"
+
+✅ Abra terminal separado e execute: `ollama serve`
+✅ Mantenha este terminal aberto durante o uso
+
+### Página não carrega
+
+✅ Verifique se Flask está rodando: `python app.py`
+✅ Acesse: http://localhost:5000 (não http://127.0.0.1:5000)
+
+### Resposta muito lenta
+
+✅ Use modelo menor: `ollama pull phi3`
+✅ Altere no `.env`: `OLLAMA_MODEL=phi3`
+✅ Reinicie o Flask
+
+## 📝 ENDPOINTS DA API
+
+- `GET /api/health` - Status da API
+- `POST /api/corrigir` - Corrige texto
+- `POST /api/reescrever` - Reescreve em estilo específico
+- `POST /api/melhorar` - Melhora qualidade
+- `POST /api/resumir` - Gera resumo
+- `POST /api/sugestoes` - Analisa e sugere
+- `POST /api/verificar-plagio` - (Em desenvolvimento)
+
+## 🚀 PRÓXIMAS MELHORIAS
+
+- [ ] Sistema de histórico com banco de dados
+- [ ] Exportação em PDF/DOCX
+- [ ] Análise de métricas (palavras, frases, legibilidade)
+- [ ] Detecção de plágio (API externa)
+- [ ] Tema claro/escuro
+- [ ] Autenticação de usuários
+- [ ] Cache de respostas (Redis)
+
+## 📄 LICENÇA
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👤 AUTOR
+
+**Project BitBloom**
+
+---
+
+⭐ **Dica**: Para melhor desempenho, use SSD e pelo menos 8GB de RAM. O modelo `llama3.2` requer ~2GB de espaço em disco.
 
 ## 🔐 Segurança
 
