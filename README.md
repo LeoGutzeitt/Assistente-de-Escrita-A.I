@@ -1,31 +1,63 @@
-# ✍️ Assistente de Escrita A.I
+# ✍️ ASSISTENTE DE ESCRITA A.I
 
-Uma aplicação web inteligente que utiliza IA para corrigir erros, reescrever e melhorar textos em português.
+Uma aplicação web inteligente que utiliza IA **100% GRATUITA** (Ollama) para corrigir erros, reescrever, melhorar e resumir textos em português.
 
-## 🚀 Funcionalidades
+## 🚀 FUNCIONALIDADES
 
-- **Correção de Erros**: Corrige erros gramaticais, ortográficos e de pontuação
-- **Reescrita de Texto**: Reescreve textos em diferentes estilos (formal, informal, técnico, criativo)
-- **Melhoria de Texto**: Aprimora a qualidade geral do texto, tornando-o mais claro e impactante
-- **Interface Responsiva**: Design moderno e intuitivo que funciona em qualquer dispositivo
+- **✅ CORREÇÃO DE TEXTO**: Corrige erros gramaticais, ortográficos e de pontuação
+- **🔄 REESCRITA DE TEXTO**: Reescreve em 4 estilos (formal, informal, técnico, criativo)
+- **⬆️ MELHORIA DE TEXTO**: Aprimora qualidade, clareza e coesão
+- **📝 RESUMO DE TEXTO**: Gera resumos em 3 tamanhos (curto, médio, longo)
+- **💡 SUGESTÕES DE MELHORIA**: Analisa e sugere melhorias sem reescrever
+- **🎨 INTERFACE YOUTUBE**: Design escuro moderno com navegação por sidebar
+- **🆓 TOTALMENTE GRATUITO**: Sem API keys, sem custos, 100% local
 
-## 📋 Pré-requisitos
+## 📋 PRÉ-REQUISITOS
 
-- Python 3.8 ou superior
-- Conta na OpenAI (para obter API key)
-- Navegador web moderno
+- **Python 3.8+**
+- **Ollama** (IA local e gratuita)
+- **Navegador web moderno**
 
-## 🔧 Instalação
+## 🔧 INSTALAÇÃO
 
-### Backend (Flask)
+### 1️⃣ INSTALAR OLLAMA (IA Gratuita)
 
-1. Navegue até a pasta backend:
+**Windows:**
+
+1. Baixe: https://ollama.com/download/windows
+2. Execute o instalador `.exe`
+3. Reinicie o terminal após instalação
+
+**Linux:**
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+**macOS:**
+
+1. Baixe: https://ollama.com/download/mac
+2. Arraste para Aplicativos
+
+### 2️⃣ BAIXAR MODELO DE IA
+
+Abra um terminal e execute:
+
+```bash
+ollama pull llama3.2
+```
+
+Aguarde o download (~2GB). Modelos alternativos: `mistral`, `gemma`, `phi3`
+
+### 3️⃣ CONFIGURAR BACKEND (Flask)
+
+1. Clone o repositório e navegue até a pasta backend:
 
 ```bash
 cd backend
 ```
 
-2. Crie e ative um ambiente virtual:
+2. Crie e ative ambiente virtual:
 
 ```bash
 # Windows
@@ -37,33 +69,35 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-3. Instale as dependências:
+3. Instale dependências:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Configure as variáveis de ambiente:
+4. **(OPCIONAL)** Configure variáveis de ambiente `.env`:
 
-   - Copie o arquivo `.env.example` para `.env`
-   - Adicione sua chave da API OpenAI no arquivo `.env`:
+```env
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2
+```
 
-   ```
-   OPENAI_API_KEY=sua_chave_aqui
-   ```
+### 4️⃣ EXECUTAR APLICAÇÃO
 
-5. Execute o servidor:
+**Terminal 1 - Iniciar Ollama:**
 
 ```bash
+ollama serve
+```
+
+**Terminal 2 - Iniciar Flask:**
+
+```bash
+cd backend
 python app.py
 ```
 
-O backend estará rodando em `http://localhost:5000`
-
-### Frontend
-
-1. Abra o arquivo `frontend/index.html` em seu navegador
-   - Ou use um servidor local como Live Server (extensão do VS Code)
+Acesse: **http://localhost:5000**
 
 ## 🎯 Como Usar
 
