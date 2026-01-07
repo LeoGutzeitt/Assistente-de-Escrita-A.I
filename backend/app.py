@@ -18,6 +18,10 @@ OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'llama3.2')
 def chamar_ollama(prompt, system_prompt, temperature=0.5):
     
     try:
+        print(f"[DEBUG] Chamando Ollama em {OLLAMA_URL}")
+        print(f"[DEBUG] Modelo: {OLLAMA_MODEL}")
+        print(f"[DEBUG] Tamanho do prompt: {len(prompt)} caracteres")
+        
         response = requests.post(
             f"{OLLAMA_URL}/api/generate",
             json={
@@ -26,17 +30,31 @@ def chamar_ollama(prompt, system_prompt, temperature=0.5):
                 "temperature": temperature,
                 "stream": False
             },
-            timeout=60
+            timeout=120
         )
+        
+        print(f"[DEBUG] Status da resposta: {response.status_code}")
         
         if response.status_code == 200:
             result = response.json()
-            return result.get('response', '')
+            resposta = result.get('response', '').strip()
+            print(f"[DEBUG] Resposta recebida: {len(resposta)} caracteres")
+            
+            if not resposta:
+                raise Exception("Ollama retornou resposta vazia")
+                
+            return resposta
         else:
-            raise Exception(f"Erro do Ollama: {response.status_code}")
+            raise Exception(f"Ollama retornou erro {response.status_code}: {response.text}")
+            
     except requests.exceptions.ConnectionError:
-        raise Exception("Ollama não está rodando. Execute: ollama serve")
+        print("[ERRO] Não foi possível conectar ao Ollama")
+        raise Exception("Ollama não está rodando. Abra um terminal e execute: ollama serve")
+    except requests.exceptions.Timeout:
+        print("[ERRO] Timeout ao chamar Ollama")
+        raise Exception("Ollama demorou muito para responder. Tente um texto menor.")
     except Exception as e:
+        print(f"[ERRO] Erro inesperado: {str(e)}")
         raise Exception(f"Erro ao chamar Ollama: {str(e)}")
 
 # ==================== ROTAS PARA SERVIR O FRONTEND ====================
@@ -62,16 +80,24 @@ def health():
 def corrigir_texto():
     """Corrigir erros gramaticais e ortográficos no texto"""
     try:
+        print("\n[INFO] === Requisição de Correção Recebida ===")
         data = request.get_json()
         texto = data.get('texto', '')
         
         if not texto:
+            print("[ERRO] Texto vazio recebido")
             return jsonify({'error': 'Escreva algum texto para ser corrigido'}), 400
         
-        system_prompt = "Você é um assistente de escrita especializado em correção de texto em português. Corrija erros gramaticais, ortográficos e de pontuação, mantendo o estilo original do autor. Retorne apenas o texto corrigido, sem explicações adicionais."
-        prompt = f"Corrija o seguinte texto:\n\n{texto}"
+        print(f"[INFO] Texto recebido: {len(texto)} caracteres")
         
-        texto_corrigido = chamar_ollama(prompt, system_prompt, temperature=0.3)
+        system_prompt = "Você é um assistente de escrita especializado em correção de texto em português. Corrija erros gramaticais, ortográficos e de pontuação, mantendo o estilo original do autor. Retorne APENAS o texto corrigido, sem explicações adicionais."
+        
+        texto_corrigido = chamar_ollama(texto, system_prompt, temperature=0.3)
+        
+        if not texto_corrigido:
+            raise Exception("Ollama não retornou nenhum texto corrigido")
+        
+        print(f"[SUCESSO] Texto corrigido: {len(texto_corrigido)} caracteres\n")
         
         return jsonify({
             'texto_original': texto,
@@ -80,6 +106,7 @@ def corrigir_texto():
         })
     
     except Exception as e:
+        print(f"[ERRO] Falha na correção: {str(e)}\n")
         return jsonify({'error': str(e), 'success': False}), 500
 
 @app.route('/api/reescrever', methods=['POST'])
