@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assistente de Escrita A.I</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>✍️ Assistente de Escrita A.I</h1>
+        <p class="subtitle">
+          Corrija, reescreva e melhore seus textos com inteligência artificial
+        </p>
+      </header>
+
+      <div class="main-content">
+        <!-- Área de entrada de texto -->
+        <div class="text-section">
+          <div class="section-header">
+            <h2>Seu Texto</h2>
+            <span class="char-count" id="charCount">0 caracteres</span>
+          </div>
+          <textarea
+            id="inputText"
+            placeholder="Digite ou cole seu texto aqui..."
+            rows="15"
+          ></textarea>
+        </div>
+
+        <!-- Controles -->
+        <div class="controls">
+          <div class="button-group">
+            <button class="btn btn-primary" onclick="corrigirTexto()">
+              🔍 Corrigir Erros
+            </button>
+            <button class="btn btn-primary" onclick="melhorarTexto()">
+              ⭐ Melhorar Texto
+            </button>
+          </div>
+
+          <div class="rewrite-section">
+            <label for="estiloSelect">Reescrever como:</label>
+            <select id="estiloSelect">
+              <option value="formal">Formal</option>
+              <option value="informal">Informal</option>
+              <option value="técnico">Técnico</option>
+              <option value="criativo">Criativo</option>
+            </select>
+            <button class="btn btn-secondary" onclick="reescreverTexto()">
+              🔄 Reescrever
+            </button>
+          </div>
+
+          <button class="btn btn-clear" onclick="limparTextos()">
+            🗑️ Limpar Tudo
+          </button>
+        </div>
+
+        <!-- Área de resultado -->
+        <div class="text-section">
+          <div class="section-header">
+            <h2>Resultado</h2>
+            <button
+              class="btn btn-copy"
+              id="copyBtn"
+              onclick="copiarResultado()"
+              style="display: none"
+            >
+              📋 Copiar
+            </button>
+          </div>
+          <textarea
+            id="outputText"
+            placeholder="O resultado aparecerá aqui..."
+            rows="15"
+            readonly
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div class="loading" id="loading" style="display: none">
+        <div class="spinner"></div>
+        <p>Processando...</p>
+      </div>
+
+      <!-- Toast notification -->
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

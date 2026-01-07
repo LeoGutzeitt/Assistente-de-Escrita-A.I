@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assistente de Escrita A.I</title>
+    <link rel="stylesheet" href="style_novo.css" />
+    <!-- Google Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Sidebar / Menu Lateral -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <button class="menu-btn" onclick="toggleSidebar()">
+          <span class="material-icons">menu</span>
+        </button>
+        <h2 class="logo">✍️ A.I Writer</h2>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" onclick="mostrarSecao('editor')">
+          <span class="material-icons">edit</span>
+          <span>Editor</span>
+        </button>
+        <button class="nav-item" onclick="mostrarSecao('corrigir')">
+          <span class="material-icons">spellcheck</span>
+          <span>Corrigir</span>
+        </button>
+        <button class="nav-item" onclick="mostrarSecao('reescrever')">
+          <span class="material-icons">refresh</span>
+          <span>Reescrever</span>
+        </button>
+        <button class="nav-item" onclick="mostrarSecao('melhorar')">
+          <span class="material-icons">auto_awesome</span>
+          <span>Melhorar</span>
+        </button>
+        <button class="nav-item" onclick="mostrarSecao('resumir')">
+          <span class="material-icons">summarize</span>
+          <span>Resumir</span>
+        </button>
+        <button class="nav-item" onclick="mostrarSecao('sugestoes')">
+          <span class="material-icons">lightbulb</span>
+          <span>Sugestões</span>
+        </button>
+
+        <div class="nav-divider"></div>
+
+        <button class="nav-item" onclick="mostrarSecao('historico')">
+          <span class="material-icons">history</span>
+          <span>Histórico</span>
+        </button>
+        <button class="nav-item" onclick="mostrarSecao('configuracoes')">
+          <span class="material-icons">settings</span>
+          <span>Configurações</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-container">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="menu-btn mobile-only" onclick="toggleSidebar()">
+          <span class="material-icons">menu</span>
+        </button>
+        <div class="topbar-title">
+          <h1>Assistente de Escrita</h1>
+          <p>Powered by AI</p>
+        </div>
+        <div class="topbar-actions">
+          <button
+            class="icon-btn"
+            title="Tela cheia"
+            onclick="toggleFullscreen()"
+          >
+            <span class="material-icons">fullscreen</span>
+          </button>
+          <button class="icon-btn" title="Tema" onclick="toggleTheme()">
+            <span class="material-icons">dark_mode</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Área de Trabalho -->
+      <div class="workspace">
+        <!-- SEÇÃO: Editor Principal -->
+        <section id="secao-editor" class="content-section active">
+          <div class="editor-container">
+            <div class="editor-panel">
+              <div class="panel-header">
+                <h3><span class="material-icons">edit_note</span> Seu Texto</h3>
+                <span class="char-count" id="charCount">0 caracteres</span>
+              </div>
+              <textarea
+                id="inputText"
+                placeholder="Digite ou cole seu texto aqui para começar..."
+                class="editor-textarea"
+              ></textarea>
+              <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="limparTexto('input')">
+                  <span class="material-icons">clear</span> Limpar
+                </button>
+                <button class="toolbar-btn" onclick="colarTexto()">
+                  <span class="material-icons">content_paste</span> Colar
+                </button>
+              </div>
+            </div>
+
+            <div class="editor-panel">
+              <div class="panel-header">
+                <h3>
+                  <span class="material-icons">description</span> Resultado
+                </h3>
+                <button
+                  class="btn-copy"
+                  id="copyBtn"
+                  onclick="copiarResultado()"
+                  style="display: none"
+                >
+                  <span class="material-icons">content_copy</span> Copiar
+                </button>
+              </div>
+              <textarea
+                id="outputText"
+                placeholder="O resultado aparecerá aqui..."
+                class="editor-textarea"
+                readonly
+              ></textarea>
+              <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="substituirTexto()">
+                  <span class="material-icons">swap_horiz</span> Substituir
+                  Original
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Corrigir -->
+        <section id="secao-corrigir" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">spellcheck</span>
+              <div>
+                <h2>Corrigir Texto</h2>
+                <p>Corrija erros gramaticais, ortográficos e de pontuação</p>
+              </div>
+            </div>
+            <button class="btn-action" onclick="corrigirTexto()">
+              <span class="material-icons">check_circle</span>
+              Corrigir Erros
+            </button>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Reescrever -->
+        <section id="secao-reescrever" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">refresh</span>
+              <div>
+                <h2>Reescrever Texto</h2>
+                <p>Transforme seu texto em diferentes estilos</p>
+              </div>
+            </div>
+
+            <div class="style-options">
+              <div class="style-card" onclick="selecionarEstilo('formal')">
+                <span class="material-icons">business_center</span>
+                <h4>Formal</h4>
+                <p>Profissional e corporativo</p>
+              </div>
+              <div class="style-card" onclick="selecionarEstilo('informal')">
+                <span class="material-icons">emoji_emotions</span>
+                <h4>Informal</h4>
+                <p>Casual e descontraído</p>
+              </div>
+              <div class="style-card" onclick="selecionarEstilo('técnico')">
+                <span class="material-icons">engineering</span>
+                <h4>Técnico</h4>
+                <p>Detalhado e preciso</p>
+              </div>
+              <div class="style-card" onclick="selecionarEstilo('criativo')">
+                <span class="material-icons">palette</span>
+                <h4>Criativo</h4>
+                <p>Envolvente e original</p>
+              </div>
+            </div>
+
+            <button class="btn-action" onclick="reescreverTexto()">
+              <span class="material-icons">auto_fix_high</span>
+              Reescrever
+            </button>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Melhorar -->
+        <section id="secao-melhorar" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">auto_awesome</span>
+              <div>
+                <h2>Melhorar Texto</h2>
+                <p>Aprimore a clareza, coesão e impacto do seu texto</p>
+              </div>
+            </div>
+            <button class="btn-action" onclick="melhorarTexto()">
+              <span class="material-icons">star</span>
+              Melhorar Agora
+            </button>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Resumir -->
+        <section id="secao-resumir" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">summarize</span>
+              <div>
+                <h2>Resumir Texto</h2>
+                <p>Crie resumos concisos mantendo as informações principais</p>
+              </div>
+            </div>
+
+            <div class="options-group">
+              <label>Tamanho do resumo:</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="tamanho" value="curto" checked />
+                  <span>Curto (2-3 frases)</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="tamanho" value="medio" />
+                  <span>Médio (1 parágrafo)</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="tamanho" value="longo" />
+                  <span>Longo (2-3 parágrafos)</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn-action" onclick="resumirTexto()">
+              <span class="material-icons">compress</span>
+              Gerar Resumo
+            </button>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Sugestões -->
+        <section id="secao-sugestoes" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">lightbulb</span>
+              <div>
+                <h2>Sugestões de Melhoria</h2>
+                <p>Receba dicas para aprimorar seu texto</p>
+              </div>
+            </div>
+            <button class="btn-action" onclick="obterSugestoes()">
+              <span class="material-icons">tips_and_updates</span>
+              Analisar e Sugerir
+            </button>
+
+            <div
+              id="sugestoesResult"
+              class="suggestions-box"
+              style="display: none"
+            >
+              <h4>Análise:</h4>
+              <div id="sugestoesContent"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Histórico -->
+        <section id="secao-historico" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">history</span>
+              <div>
+                <h2>Histórico</h2>
+                <p>Seus textos processados anteriormente</p>
+              </div>
+            </div>
+            <div class="empty-state">
+              <span class="material-icons">inbox</span>
+              <p>Nenhum histórico ainda</p>
+              <small>Seus textos processados aparecerão aqui</small>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO: Configurações -->
+        <section id="secao-configuracoes" class="content-section">
+          <div class="feature-container">
+            <div class="feature-header">
+              <span class="material-icons feature-icon">settings</span>
+              <div>
+                <h2>Configurações</h2>
+                <p>Personalize sua experiência</p>
+              </div>
+            </div>
+
+            <div class="config-options">
+              <div class="config-item">
+                <div>
+                  <h4>Tema Escuro</h4>
+                  <p>Ativar modo escuro para a interface</p>
+                </div>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="darkModeToggle"
+                    onchange="toggleTheme()"
+                  />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="config-item">
+                <div>
+                  <h4>Modelo de IA</h4>
+                  <p>Selecione o modelo do Ollama</p>
+                </div>
+                <select class="config-select">
+                  <option value="llama3.2">Llama 3.2</option>
+                  <option value="mistral">Mistral</option>
+                  <option value="gemma">Gemma</option>
+                  <option value="phi3">Phi 3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <p>Processando seu texto...</p>
+      </div>
+
+      <!-- Toast Notification -->
+      <div class="toast" id="toast"></div>
+    </main>
+
+    <script src="script_novo.js"></script>
+  </body>
+</html>
