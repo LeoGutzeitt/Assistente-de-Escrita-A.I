@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente de Escrita A.I</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Assistente de Escrita A.I</h1>
+            <p class="subtitle">Melhore seus textos com inteligência artificial</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <h2>Seu Texto</h2>
+                <textarea id="inputText" placeholder="Digite ou cole seu texto aqui..." rows="10"></textarea>
+                
+                <div class="controls">
+                    <div class="task-selection">
+                        <label for="taskType">Tipo de Assistência:</label>
+                        <select id="taskType">
+                            <option value="grammar">Correção Gramatical</option>
+                            <option value="style">Melhoria de Estilo</option>
+                            <option value="expand">Expandir Texto</option>
+                            <option value="summarize">Resumir</option>
+                            <option value="translate">Traduzir</option>
+                            <option value="creative">Escrita Criativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="api-toggle">
+                        <label>
+                            <input type="checkbox" id="useApi">
+                            Usar API de IA (requer chave API)
+                        </label>
+                    </div>
+                    
+                    <button id="assistBtn" class="btn-primary">Melhorar Texto</button>
+                </div>
+            </div>
+
+            <div class="output-section" id="outputSection" style="display: none;">
+                <h2>Texto Melhorado</h2>
+                <div id="outputText" class="output-box"></div>
+                <button id="copyBtn" class="btn-secondary">Copiar Texto</button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processando seu texto...</p>
+            </div>
+
+            <div id="error" class="error-message" style="display: none;"></div>
+        </main>
+
+        <footer>
+            <p>Assistente de Escrita A.I - Desenvolvido com Flask e Python</p>
+            <p class="info">💡 Dica: Para usar IA real, configure a variável de ambiente OPENAI_API_KEY</p>
+        </footer>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const taskType = document.getElementById('taskType');
+        const useApi = document.getElementById('useApi');
+        const assistBtn = document.getElementById('assistBtn');
+        const outputSection = document.getElementById('outputSection');
+        const outputText = document.getElementById('outputText');
+        const copyBtn = document.getElementById('copyBtn');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+
+        assistBtn.addEventListener('click', async () => {
+            const text = inputText.value.trim();
+            
+            if (!text) {
+                showError('Por favor, digite algum texto para melhorar.');
+                return;
+            }
+
+            hideError();
+            showLoading();
+            hideOutput();
+
+            try {
+                const response = await fetch('/assist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        task_type: taskType.value,
+                        use_api: useApi.checked
+                    })
+                });
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.error) {
+                    showError(result.error);
+                } else {
+                    displayResult(result);
+                }
+            } catch (err) {
+                hideLoading();
+                showError('Erro ao processar texto: ' + err.message);
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const text = outputText.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                copyBtn.textContent = '✓ Copiado!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copiar Texto';
+                }, 2000);
+            });
+        });
+
+        function displayResult(result) {
+            outputText.textContent = result.improved;
+            outputSection.style.display = 'block';
+        }
+
+        function showLoading() {
+            loading.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loading.style.display = 'none';
+        }
+
+        function showOutput() {
+            outputSection.style.display = 'block';
+        }
+
+        function hideOutput() {
+            outputSection.style.display = 'none';
+        }
+
+        function showError(message) {
+            error.textContent = message;
+            error.style.display = 'block';
+        }
+
+        function hideError() {
+            error.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
