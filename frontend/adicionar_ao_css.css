@@ -1,0 +1,16 @@
+/* Adicione isso ao style_novo.css */
+
+.action-hint {
+  background: rgba(62, 166, 255, 0.1);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+
+.action-hint p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+}

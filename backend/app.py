@@ -141,37 +141,25 @@ def melhorar_texto():
 @app.route('/api/resumir', methods=['POST'])
 def resumir_texto():
     try:
-        data = request.get_json() ##pede o texto em json
-        tamanho = data.get('tamanho', 'curto', 'medio', 'longo') #define o tamanho do resumo
-        texto = data.get('texto', '')# recebe o texto a ser resumido
+        data = request.get_json()
+        texto = data.get('texto', '')
+        tamanho = data.get('tamanho', 'medio')  # curto, medio, longo
 
         if not texto:
             return jsonify({'error': 'Não tem o que resumir'}), 400
+        
         prompts_tamanho = {
             'curto': 'em 2-3 frases', 
             'medio': 'em 1 parágrafo',
             'longo': 'em 2-3 parágrafos'
         }
-        system_prompt = "sou um assistente especializado em resumir textos em português. " + \
+        
+        system_prompt = "Você é um assistente especializado em resumir textos em português. " + \
                        f"Resuma o texto a seguir {prompts_tamanho.get(tamanho, prompts_tamanho['medio'])}, " + \
                        "mantendo apenas as informações mais importantes. Retorne apenas o resumo."
-        resumo = chamar_ollama(texto, system_prompt, temperature=0.4)
-        return jsonify({
-            'texto_original': texto,
-            'resumo': resumo,
-            'tamanho': tamanho,
-            'success': True
-        })
-    
-    except Exception as e:
-        return jsonify({'error': str(e), 'success': False}), 500
-    
-'''
-        # TODO: Chame a função chamar_ollama() com os parâmetros corretos
-        # resumo = chamar_ollama(...)
+        
         resumo = chamar_ollama(texto, system_prompt, temperature=0.4)
         
-        # TODO: Retorne o JSON com os dados adequados
         return jsonify({
             'texto_original': texto,
             'resumo': resumo,
@@ -362,4 +350,3 @@ MELHORIAS ADICIONAIS QUE VOCÊ PODE FAZER:
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
-'''

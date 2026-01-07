@@ -76,8 +76,9 @@ body {
 
 .logo {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
+  letter-spacing: 1px;
 }
 
 .sidebar-nav {
@@ -97,10 +98,11 @@ body {
   color: var(--text-primary);
   cursor: pointer;
   border-radius: 10px;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 500;
   text-align: left;
   transition: var(--transition);
+  letter-spacing: 0.5px;
 }
 
 .nav-item:hover {
@@ -145,12 +147,14 @@ body {
 
 .topbar-title h1 {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .topbar-title p {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
+  letter-spacing: 0.5px;
 }
 
 .topbar-actions {
@@ -680,4 +684,20 @@ input:checked + .slider:before {
 
 .mobile-only {
   display: none;
+}
+
+/* ================ ACTION HINTS ================ */
+.action-hint {
+  background: rgba(62, 166, 255, 0.1);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+
+.action-hint p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
 }

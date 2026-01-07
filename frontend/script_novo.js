@@ -33,7 +33,13 @@ function mostrarSecao(secaoId) {
   }
 
   // Adicionar classe active no nav-item correspondente
-  event.target.closest(".nav-item")?.classList.add("active");
+  // Encontrar o botão que chamou esta função
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    const onclickAttr = item.getAttribute("onclick");
+    if (onclickAttr && onclickAttr.includes(`'${secaoId}'`)) {
+      item.classList.add("active");
+    }
+  });
 
   // Fechar sidebar no mobile
   if (window.innerWidth <= 768) {
@@ -55,7 +61,7 @@ function toggleFullscreen() {
 
 function toggleTheme() {
   // TODO: Implementar tema claro
-  showToast("Tema claro em desenvolvimento!", "info");
+  showToast("TEMA CLARO EM DESENVOLVIMENTO!", "info");
 }
 
 // ================ EDITOR FUNCTIONS ================
@@ -63,18 +69,18 @@ function toggleTheme() {
 // Atualizar contador de caracteres
 inputText?.addEventListener("input", () => {
   const count = inputText.value.length;
-  charCount.textContent = `${count} caracteres`;
+  charCount.textContent = `${count} CARACTERES`;
 });
 
 function limparTexto(tipo) {
   if (tipo === "input") {
     inputText.value = "";
-    charCount.textContent = "0 caracteres";
+    charCount.textContent = "0 CARACTERES";
   } else {
     outputText.value = "";
     copyBtn.style.display = "none";
   }
-  showToast("Texto limpo!");
+  showToast("TEXTO LIMPO!");
 }
 
 async function colarTexto() {
@@ -82,9 +88,9 @@ async function colarTexto() {
     const texto = await navigator.clipboard.readText();
     inputText.value = texto;
     inputText.dispatchEvent(new Event("input"));
-    showToast("Texto colado com sucesso!");
+    showToast("TEXTO COLADO COM SUCESSO!");
   } catch (err) {
-    showToast("Erro ao colar texto. Use Ctrl+V", "error");
+    showToast("ERRO AO COLAR TEXTO. USE CTRL+V", "error");
   }
 }
 
@@ -94,14 +100,14 @@ function substituirTexto() {
     inputText.dispatchEvent(new Event("input"));
     outputText.value = "";
     copyBtn.style.display = "none";
-    showToast("Texto substituído!");
+    showToast("TEXTO SUBSTITUÍDO!");
   }
 }
 
 function copiarResultado() {
   outputText.select();
   document.execCommand("copy");
-  showToast("Texto copiado para a área de transferência!");
+  showToast("TEXTO COPIADO!");
 }
 
 // ================ LOADING & TOAST ================
@@ -164,7 +170,7 @@ async function corrigirTexto() {
     if (resultado.success) {
       outputText.value = resultado.texto_corrigido;
       copyBtn.style.display = "flex";
-      showToast("Texto corrigido com sucesso!");
+      showToast("TEXTO CORRIGIDO COM SUCESSO!");
 
       // Voltar para o editor
       mostrarSecaoById("editor");
@@ -172,7 +178,7 @@ async function corrigirTexto() {
       throw new Error(resultado.error);
     }
   } catch (error) {
-    showToast("Erro ao corrigir texto: " + error.message, "error");
+    showToast("ERRO AO CORRIGIR TEXTO: " + error.message, "error");
   } finally {
     showLoading(false);
   }
@@ -209,7 +215,9 @@ async function reescreverTexto() {
     if (resultado.success) {
       outputText.value = resultado.texto_reescrito;
       copyBtn.style.display = "flex";
-      showToast(`Texto reescrito no estilo ${estiloSelecionado}!`);
+      showToast(
+        `TEXTO REESCRITO NO ESTILO ${estiloSelecionado.toUpperCase()}!`
+      );
 
       // Voltar para o editor
       mostrarSecaoById("editor");
@@ -217,7 +225,7 @@ async function reescreverTexto() {
       throw new Error(resultado.error);
     }
   } catch (error) {
-    showToast("Erro ao reescrever texto: " + error.message, "error");
+    showToast("ERRO AO REESCREVER TEXTO: " + error.message, "error");
   } finally {
     showLoading(false);
   }
@@ -239,7 +247,7 @@ async function melhorarTexto() {
     if (resultado.success) {
       outputText.value = resultado.texto_melhorado;
       copyBtn.style.display = "flex";
-      showToast("Texto melhorado com sucesso!");
+      showToast("TEXTO MELHORADO COM SUCESSO!");
 
       // Voltar para o editor
       mostrarSecaoById("editor");
@@ -247,7 +255,7 @@ async function melhorarTexto() {
       throw new Error(resultado.error);
     }
   } catch (error) {
-    showToast("Erro ao melhorar texto: " + error.message, "error");
+    showToast("ERRO AO MELHORAR TEXTO: " + error.message, "error");
   } finally {
     showLoading(false);
   }
@@ -271,7 +279,7 @@ async function resumirTexto() {
     if (resultado.success) {
       outputText.value = resultado.resumo;
       copyBtn.style.display = "flex";
-      showToast(`Resumo ${tamanho} gerado com sucesso!`);
+      showToast(`RESUMO ${tamanho.toUpperCase()} GERADO COM SUCESSO!`);
 
       // Voltar para o editor
       mostrarSecaoById("editor");
@@ -279,7 +287,7 @@ async function resumirTexto() {
       throw new Error(resultado.error);
     }
   } catch (error) {
-    showToast("Erro ao resumir texto: " + error.message, "error");
+    showToast("ERRO AO RESUMIR TEXTO: " + error.message, "error");
   } finally {
     showLoading(false);
   }
@@ -305,12 +313,12 @@ async function obterSugestoes() {
       sugestoesContent.textContent = resultado.analise;
       sugestoesBox.style.display = "block";
 
-      showToast("Análise concluída!");
+      showToast("ANÁLISE CONCLUÍDA!");
     } else {
       throw new Error(resultado.error);
     }
   } catch (error) {
-    showToast("Erro ao obter sugestões: " + error.message, "error");
+    showToast("ERRO AO OBTER SUGESTÕES: " + error.message, "error");
   } finally {
     showLoading(false);
   }
@@ -347,12 +355,12 @@ window.addEventListener("load", async () => {
     const response = await fetch(`${API_URL}/health`);
     const data = await response.json();
     console.log("✅ API Status:", data.message);
-    showToast("Conectado à API!");
+    showToast("CONECTADO À API!");
   } catch (error) {
     console.warn(
       "⚠️ API não está respondendo. Certifique-se de que o backend está rodando."
     );
-    showToast("API offline. Inicie o backend!", "error");
+    showToast("API OFFLINE. INICIE O BACKEND!", "error");
   }
 });
 
