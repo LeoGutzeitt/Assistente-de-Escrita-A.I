@@ -1,5 +1,5 @@
 // Configuração da API
-const API_URL = '/api'; // Agora usa URL relativa pois o Flask serve o frontend
+const API_URL = "/api"; // Agora usa URL relativa pois o Flask serve o frontend
 
 // Elementos do DOM
 const inputText = document.getElementById("inputText");
