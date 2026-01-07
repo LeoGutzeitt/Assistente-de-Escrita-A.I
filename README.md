@@ -117,3 +117,10 @@ Sinta-se à vontade para abrir issues e pull requests!
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+
+
+
+
+<img width="1911" height="951" alt="image" src="https://github.com/user-attachments/assets/2d3cd77a-c1a5-4c2e-a249-88e6326480e8" />
+
